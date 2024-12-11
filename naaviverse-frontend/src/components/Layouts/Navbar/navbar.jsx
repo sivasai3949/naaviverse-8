@@ -216,7 +216,6 @@ const NavBar = () => {
             style={{ color: "white", width: 'unset', padding: '0 30px' }}
             onClick={() => {
               // setSelectedApp(globalMenu[0]);
-              setLoginType("Accountants")
               navigate("/login");
               // setdropDownSelectedSub("");
               // setdropDown(false);
