@@ -1,0 +1,325 @@
+.mapspage1 {
+  width: 100%;
+  height: 100%;
+
+  .maps-container1 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+
+    .maps-sidebar1 {
+      // width: 30%;
+      width: 350px;
+      height: 100%;
+      border-left: 1px solid #e5e5e5;
+      overflow-y: scroll;
+
+      .top-icons1 {
+        display: flex;
+        padding: 1rem;
+        border-bottom: 1px solid #e5e5e5;
+        gap: 2rem;
+
+        .each-icon1 {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          align-items: center;
+          cursor: pointer;
+          transition: all ease 0.2s;
+
+          .border-div1 {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+
+            img {
+              width: 60%;
+              height: 60%;
+            }
+          }
+
+          .icon-name-txt1 {
+            font-size: 0.7rem;
+            text-align: center;
+          }
+
+          &:hover {
+            .border-div1 {
+              box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            }
+
+            .icon-name-txt1 {
+              transform: scale(1.05);
+            }
+          }
+        }
+      }
+
+      .mid-area1 {
+        width: 100%;
+        padding: 2rem 1rem;
+        border-bottom: 1px solid #e5e5e5;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .current-coord-container {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 1rem;
+
+          .current-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+          }
+
+          .each-coo-field {
+            width: 100%;
+            border-radius: 45px;
+            border: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 300;
+            font-size: 0.8rem;
+
+            .field-name {
+              width: 45%;
+              height: 3rem;
+              // padding: 1rem 1rem 1rem 2rem;
+              border-right: 1px solid #e5e5e5;
+              font-size: 0.9em;
+              display: flex;
+              align-items: center;
+              padding-left: 20px;
+            }
+
+            .field-value {
+              width: 45%;
+              padding: 1rem 1rem;
+              text-align: right;
+              border-left: 1px solid #e5e5e5;
+            }
+          }
+        }
+
+        .input-div-1 {
+          width: 100%;
+          border: 1px solid #e5e5e5;
+          border-radius: 45px;
+
+          input {
+            width: 100%;
+            border: none;
+            padding: 1rem;
+            border-radius: 45px;
+          }
+        }
+
+        .destination-container1 {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+
+          .dest-txt1 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            img {
+              cursor: pointer;
+              transition: all ease 0.2s;
+
+              &:hover {
+                transform: scale(1.05);
+              }
+            }
+          }
+
+          .input-div-2 {
+            width: 100%;
+            border: 1px solid #e5e5e5;
+            border-radius: 45px;
+
+            input {
+              width: 100%;
+              border: none;
+              padding: 1rem;
+              border-radius: 45px;
+            }
+
+            .react-datepicker-wrapper {
+              width: 100%;
+            }
+          }
+        }
+
+        .add-div1 {
+          width: fit-content;
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          cursor: pointer;
+          transition: all ease 0.2s;
+
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+
+        .maps-btns-div1 {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+
+          .gs-Btn-maps1 {
+            color: white;
+            font-weight: 500;
+            border-radius: 35px;
+            text-align: center;
+            background: linear-gradient(89deg, #47b4d5 0%, #29449d 100%);
+            padding: 0.9rem 1.5rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all ease 0.2s;
+
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+
+          .reset-btn1 {
+            color: #100f0d;
+            border-radius: 35px;
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 0.9rem 1.5rem;
+            font-weight: 500;
+            border: 1px solid #e5e5e5;
+            cursor: pointer;
+            transition: all ease 0.2s;
+
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+        }
+      }
+
+      .congrats-area {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        justify-content: center;
+        align-items: center;
+
+        .congrats-textt {
+          font-size: 1.25rem;
+          font-weight: 500;
+          background: var(
+            --Naavi,
+            linear-gradient(90deg, #47b4d5 0.02%, #29449d 119.26%)
+          );
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .congrats-textt1 {
+          font-weight: 300;
+          line-height: 1.7;
+          text-align: center;
+        }
+      }
+    }
+
+    .maps-content-area1 {
+      width: 77%;
+      height: 100%;
+
+      .path-options-div {
+        width: 100%;
+        height: 3rem;
+        display: flex;
+        justify-content: center;
+
+        .path-options {
+          width: fit-content;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem 2rem;
+          border: 0.5px solid #e5e5e5;
+          border-bottom-left-radius: 45px;
+          border-bottom-right-radius: 45px;
+          border-top: none;
+
+          .each-path-opt {
+            font-size: 0.8rem;
+            padding: 5px 1.5rem;
+            border-radius: 25px;
+          }
+
+          .toggleContainer1 {
+            width: 2.5rem;
+            border: 1px solid #d9d9d9;
+            border-radius: 35px;
+            margin-left: 10px;
+            margin-right: 10px;
+            cursor: pointer;
+
+            .toggle1 {
+              margin: 2px;
+              width: 14px;
+              height: 14px;
+              background: linear-gradient(
+                90deg,
+                #47b4d5 0.02%,
+                #29449d 119.26%
+              );
+              border-radius: 50%;
+              transition: all 0.5s ease;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.toggleContainer {
+  width: 15% !important;
+  border: 1px solid #d9d9d9;
+  border-radius: 35px;
+  margin-left: 10px;
+  margin-right: 10px;
+  // position: absolute;
+  // justify-content: center;
+}
+.toggle {
+  margin: 2px;
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(90deg, #47b4d5 0.02%, #29449d 119.26%);
+  border-radius: 50%;
+  transition: all 0.5s ease;
+  // transform: translateX(0px);
+  cursor: pointer;
+}

@@ -1,0 +1,67 @@
+.pathviewPage {
+  width: 100%;
+  height: 100%;
+
+  .pathviewNav {
+    width: 100%;
+    height: 3rem;
+    border-bottom: 0.5px solid #e5e5e5;
+    display: flex;
+    align-items: center;
+
+    .name-div {
+      width: 30%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 35px;
+      font-weight: 400;
+      font-size: 0.8rem;
+    }
+
+    .description-div {
+      width: 70%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 35px;
+      font-weight: 400;
+      font-size: 0.8rem;
+    }
+  }
+
+  .pathviewContent {
+    width: 100%;
+    height: calc(100% - 3rem);
+    overflow-y: scroll;
+
+    .each-pv-data {
+      width: 100%;
+      border-bottom: 0.5px solid #e5e5e5;
+      display: flex;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all ease 0.2s;
+
+      .each-pv-name {
+        width: 30%;
+        padding: 2rem 0 2rem 35px;
+        line-height: 1.6;
+      }
+
+      .each-pv-desc {
+        width: 70%;
+        padding: 2rem 0 2rem 0;
+        font-weight: 300;
+        padding-left: 35px;
+        line-height: 1.6;
+        // text-transform: none;
+        padding-right: 1rem;
+      }
+
+      &:hover {
+        background: rgba(237, 237, 237, 0.368627451);
+      }
+    }
+  }
+}

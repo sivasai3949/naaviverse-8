@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+@import '_mixin';
+
+:root {
+  --font-color: #100F0D;
+}
+
+body {
+  font-family: Montserrat !important;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  color: var(--font-color);
+  #root {
+    height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    * {
+      font-family: Montserrat;
+      outline: none;
+      box-sizing: border-box;
+    }
+  }
+}
+iframe {
+  // display: none;
+}
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.8);
+}
