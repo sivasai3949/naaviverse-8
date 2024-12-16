@@ -1,1 +1,0 @@
-export const APP_USER_TOKEN = 'app_user_token';
