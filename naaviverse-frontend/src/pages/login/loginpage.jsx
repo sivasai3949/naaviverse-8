@@ -13,6 +13,8 @@ import logo from "./logo.svg";
 import loadinglogo from "./loadinglogo.svg";
 import axios from "axios";
 import info from "./info.svg";
+import { useParams } from "react-router-dom";
+
 
 const IconMenu = [
   {
@@ -41,6 +43,9 @@ const Loginpage = () => {
   const [newPassword2, setNewPassword2] = useState("");
   const [passwordResetMsg, setPasswordResetMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userToken, setUserToken] = useState("");
+
 
   useEffect(() => {
     localStorage.clear();
@@ -109,56 +114,71 @@ const Loginpage = () => {
       });
   };
 
+  // Updated frontend code
   const initiateForgotPassword = () => {
     setLoading(true);
     let obj = {
-      email: email,
-      app_code: "naavi",
+        email: email, // Ensure this aligns with the backend's expected field
     };
+  
     axios
-      .post(
-        `https://gxauth.apimachine.com/gx/user/password/forgot/request`,
-        obj
-      )
-      .then((response) => {
-        let result = response?.data;
-        // console.log(result, "initiateForgotPassword result");
-        if (result?.status) {
-          setLoading(false);
-          setForgotPasswordStep(2);
-        }
-      })
-      .catch((error) => {
-        console.log(error, "error in initiateForgotPassword");
-      });
+        .post(
+            `http://localhost:4545/auth/forgotPassword`, // Replace with your backend endpoint
+            obj
+        )
+        .then((response) => {
+            let result = response?.data;
+            if (result?.success) {
+                setLoading(false);
+                setForgotPasswordStep(2); // Proceed to the next step (e.g., OTP verification)
+            } else {
+                console.error("Failed to send OTP:", result?.message);
+                setLoading(false);
+            }
+        })
+        .catch((error) => {
+            console.log(error, "Error in initiateForgotPassword");
+            setLoading(false);
+        });
   };
-
   const submitForgotPassword = () => {
-    let obj = {
-      email: email,
-      code: code,
-      newPassword: newPassword2,
-    };
-    axios
-      .post(
-        `https://gxauth.apimachine.com/gx/user/password/forgot/confirm`,
-        obj
-      )
-      .then((response) => {
-        let result = response?.data;
-        // console.log(result, "submitForgotPassword result");
-        if (result?.status) {
-          setPasswordResetMsg("Password reset successfully");
-          setForgotPassword(false);
-          setForgotPasswordStep(1);
-          setemail("");
-        }
-      })
-      .catch((error) => {
-        console.log(error, " error in submitForgotPassword");
-      });
-  };
+    if (newPassword2 !== newPassword1) {
+        setPasswordResetMsg("Passwords do not match.");
+        return;
+    }
 
+    const obj = {
+        email,
+        otp: code,
+        newPassword: newPassword2,
+        confirmPassword: newPassword2,
+    };
+
+    // Ensure the token is part of the URL, not the request body
+    const url = `http://localhost:4545/resetPassword/${userToken}`;
+
+    axios
+        .post(url, obj)  // Pass the URL with token as part of the endpoint
+        .then(({ data }) => {
+            if (data?.success) {
+                setPasswordResetMsg("Password reset successful!");
+                setForgotPassword(false);
+                setForgotPasswordStep(1);
+            } else {
+                console.error("Failed:", data?.message);
+                setPasswordResetMsg(data?.message || "Error occurred.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            setPasswordResetMsg("An error occurred. Please try again.");
+        });
+};
+
+
+  
+  
+  
   return (
     <div className="login-main">
       {forgotPassword ? (
@@ -172,7 +192,7 @@ const Loginpage = () => {
                 style={{ width: "50%" }}
               />
             </div>
-
+  
             <div className="input-box" style={{ marginBottom: "5rem" }}>
               <input
                 className="input-inp"
@@ -189,7 +209,7 @@ const Loginpage = () => {
                 }}
               />
             </div>
-
+  
             <div
               className="login-btn"
               onClick={() => {
@@ -224,25 +244,29 @@ const Loginpage = () => {
                 style={{ width: "50%" }}
               />
             </div>
-
+  
             <div style={{ marginBottom: "1.5rem" }}>
               We have sent a code to you’re email
             </div>
-
+  
             <div className="input-box" style={{ marginBottom: "5rem" }}>
-              <input
-                className="input-inp"
-                type="number"
-                placeholder="Enter Code..."
-                required
-                value={code}
-                onInput={(e) => {
-                  setCode(e.target.value);
-                }}
-                maxLength={6}
-                minLength={6}
-              />
-            </div>
+  <input
+    className="input-inp"
+    type="text"
+    placeholder="Enter Code..."
+    required
+    value={code}
+    onInput={(e) => {
+      const value = e.target.value;
+      const regex = /^[a-zA-Z0-9]*$/;  // Regex to allow alphanumeric characters only
+      if (regex.test(value)) {
+        setCode(value);  // Set value only if it matches the regex
+      }
+    }}
+    maxLength={6}
+    minLength={4}
+  />
+</div>
 
             <div
               className="login-btn"
@@ -277,9 +301,9 @@ const Loginpage = () => {
                 style={{ width: "50%" }}
               />
             </div>
-
+  
             <div style={{ marginBottom: "1.5rem" }}>Create new password</div>
-
+  
             <div className="input-box" style={{ marginBottom: "5rem" }}>
               <input
                 style={{ width: "90%" }}
@@ -303,7 +327,7 @@ const Loginpage = () => {
                 ></div>
               </div>
             </div>
-
+  
             <div
               className="login-btn"
               onClick={() => {
@@ -337,9 +361,9 @@ const Loginpage = () => {
                 style={{ width: "50%" }}
               />
             </div>
-
+  
             <div style={{ marginBottom: "1.5rem" }}>Confirm new password</div>
-
+  
             <div className="input-box" style={{ marginBottom: "5rem" }}>
               <input
                 style={{ width: "90%" }}
@@ -363,7 +387,7 @@ const Loginpage = () => {
                 ></div>
               </div>
             </div>
-
+  
             <div
               className="login-btn"
               onClick={() => {
@@ -417,7 +441,7 @@ const Loginpage = () => {
               onClick={() => {
                 setLoginType("Users");
                 console.log("Selected role:", "Users"); // Log selected role
-            }}
+              }}
             >
               Users
             </div>
@@ -427,13 +451,11 @@ const Loginpage = () => {
                 background: loginType === "Accountants" ? "#F1F4F6" : "",
                 fontWeight: loginType === "Accountants" ? "600" : "",
                 fontSize: loginType === "Accountants" ? "18px" : "",
-                
               }}
               onClick={() => {
                 setLoginType("Accountants");
                 console.log("Selected role:", "Accountants"); // Log selected role
-            }}
-              
+              }}
             >
               Partners
             </div>
@@ -522,6 +544,7 @@ const Loginpage = () => {
       </div>
     </div>
   );
-};
-
-export default Loginpage;
+  };
+  
+  export default Loginpage;
+  

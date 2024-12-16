@@ -146,7 +146,7 @@ const sendConfirmationEmail = async (req, res) => {
     const token = userFound.emailToken;
 
     const url = `${
-      process.env.HOST || "localhost:7000"
+      process.env.HOST || "localhost:4545"
     }/api/auth/verification/${token}`;
 
     await sendConfirmationEmailFunction(url, userFound.email);
@@ -272,63 +272,45 @@ const sendResetPasswordEmail = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const { newPassword, confirmPassword } = req.body;
+    const { newPassword, confirmPassword } = req.body; // Get new password and confirm password from body
+    const { token } = req.params; // Get token from the URL path
 
-    if (newPassword !== confirmPassword) {
-      return res
-        .status(400)
-        .json({ successful: false, message: "Passwords don't match" });
+    if (!token) {
+      return res.status(403).json({ success: false, message: "No token provided" });
     }
 
-    if (newPassword.length < 5) {
-      return res
-        .status(400)
-        .json({ successful: false, message: "Password minimum length is 5" });
-    }
+    const decoded = jwt.verify(token, process.env.JWT_RESET_FORGOTTEN_PASSWORD_KEY);
 
-    const token = req.params.token;
-
-    if (!token)
-      return res
-        .status(403)
-        .json({ success: false, message: "No token provided" });
-
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_RESET_FORGOTTEN_PASSWORD_KEY
-    );
-
-    if (!decoded) return res.status(401).json({ message: "Invalid token" });
-
-    if (Date.now() > decoded.expiration) {
-      return res.status(422).json({
-        successful: false,
-        message: "Time to reset password exceeded",
-      });
+    if (!decoded) {
+      return res.status(401).json({ message: "Invalid token" });
     }
 
     const userFound = await User.findById(decoded.id);
 
-    if (!userFound) return res.status(404).json({ message: "User not found" });
+    if (!userFound) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ successful: false, message: "Passwords don't match" });
+    }
 
     const hashedPassword = await User.encryptPassword(newPassword);
-
     userFound.password = hashedPassword;
 
     await userFound.save();
 
-    return res
-      .status(200)
-      .json({ success: true, message: "Password updated successfully" });
+    return res.status(200).json({ success: true, message: "Password updated successfully" });
   } catch (err) {
-    console.log(err);
-
+    console.error(err);
     return res.status(500).json({
       successful: false,
-      message: "Something went wrong, fail to update password",
+      message: "Something went wrong, failed to update password",
     });
   }
 };
+
+
 
 const verifyOTP = async (req, res) => {
   try {

@@ -321,7 +321,7 @@ const MyPaths = ({ search, admin, fetchAllServicesAgain, stpesMenu }) => {
           getNewPath();
           setPathActionEnabled(false);
           setActionLoading(false);
-          setPathActionStep(1);
+          setPathActionStep(1); 
         }
       });
   };
