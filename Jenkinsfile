@@ -1,4 +1,3 @@
-// The Jenkins pipeline definition starts here
 pipeline {
     // Define the agent to run the pipeline on, 'any' means it can run on any available agent.
     agent any
@@ -23,15 +22,24 @@ pipeline {
     // Define the stages that make up the pipeline.
     stages {
         // Stage for cloning the repository from GitHub or pulling the latest changes
-        stage('Clone Repository') {
+        stage('Clone or Pull Repository') {
             steps {
                 script {
-                    // Print message indicating the clone step is starting
-                    echo "Cloning the repository..."
+                    // Print message indicating the clone or pull step is starting
+                    echo "Cloning or pulling the repository..."
                     
-                    // The command tries to clone the repository. If the directory already exists, it pulls the latest changes.
-                    // 'git clone' will only run if the directory does not exist, otherwise it will 'git pull'.
-                    sh "git clone -b ${BRANCH} ${GIT_REPO} ${DEPLOY_DIR} || (cd ${DEPLOY_DIR} && git pull origin ${BRANCH})"
+                    // Check if the directory exists
+                    def exists = fileExists("${DEPLOY_DIR}")
+                    
+                    if (exists) {
+                        echo "Repository already exists, pulling latest changes..."
+                        // If the repository already exists, pull the latest changes from the specified branch
+                        sh "cd ${DEPLOY_DIR} && git pull origin ${BRANCH}"
+                    } else {
+                        echo "Cloning the repository..."
+                        // If the repository does not exist, clone the repository from the specified branch
+                        sh "git clone -b ${BRANCH} ${GIT_REPO} ${DEPLOY_DIR}"
+                    }
                 }
             }
         }
