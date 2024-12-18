@@ -4,23 +4,20 @@ pipeline {
     environment {
         GIT_REPO = 'https://github.com/sivasai3949/naaviverse-8.git'
         BRANCH = '16-12-2024'
-        DEPLOY_DIR = "${WORKSPACE}/naaviverse-8/careers-backend-node-v.1"  // Modified DEPLOY_DIR path
+        DEPLOY_DIR = '/home/ubuntu/naaviverse-8/careers-backend-node-v.1'
         SSH_KEY = credentials('EC2-SSH-Key')
     }
 
     stages {
-        stage('Clone or Pull Repository') {
+        stage('Use Existing Repository') {
             steps {
                 script {
-                    echo "Cloning or pulling the repository..."
-                    def exists = fileExists("${DEPLOY_DIR}")
-                    if (exists) {
-                        echo "Repository already exists, pulling latest changes..."
-                        sh "cd ${DEPLOY_DIR} && git pull origin ${BRANCH}"
-                    } else {
-                        echo "Cloning the repository..."
-                        sh "git clone -b ${BRANCH} ${GIT_REPO} ${DEPLOY_DIR}"
-                    }
+                    echo "Using the existing repository at ${DEPLOY_DIR}..."
+                    // Check if the directory exists and list its contents
+                    sh "ls -la ${DEPLOY_DIR}"
+                    
+                    // Pull latest changes if the repository already exists
+                    sh "cd ${DEPLOY_DIR} && git pull origin ${BRANCH}"
                 }
             }
         }
@@ -29,14 +26,8 @@ pipeline {
             steps {
                 script {
                     echo "Installing dependencies..."
-
-                    // Print the contents of the directory to verify that package.json exists
-                    sh "ls -la ${DEPLOY_DIR}"
-
-                    // Print the current working directory before running npm install
-                    sh "pwd"
-
-                    // Run npm install in the correct directory
+                    
+                    // Ensure npm installs in the right directory
                     sh "cd ${DEPLOY_DIR} && npm install"
                 }
             }
