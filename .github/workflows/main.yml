@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main  # Changed default branch to 'main'
+      - main  # Trigger the workflow on push to the 'main' branch
 
 jobs:
   deploy:
@@ -22,5 +22,5 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@api.naaviverse.com << 'EOF'
             cd /home/ubuntu/naaviverse-8
-            ./deploy.sh main  # Pass 'main' branch directly
+            ./deploy.sh main || { echo "Deployment failed"; exit 1; }
           EOF
